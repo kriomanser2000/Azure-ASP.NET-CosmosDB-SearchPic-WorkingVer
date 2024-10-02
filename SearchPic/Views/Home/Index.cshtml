@@ -1,42 +1,10 @@
-﻿﻿@{
+@{
     ViewData["Title"] = "Home Page";
 }
 
-@{
-    ViewData["Title"] = "Search Images";
-}
-
-<h2 class="text-center">Search Images by Keyword</h2>
+<h2 class="text-center">Welcome to Image Search</h2>
 <div class="row justify-content-center">
-    <div class="col-md-6">
-        <form method="get" action="/Image/Search">
-            <div class="input-group mb-3">
-                <input type="text" name="keyword" class="form-control" placeholder="Enter keyword..." required>
-                <div class="input-group-append">
-                    <button class="btn btn-primary" type="submit">Search</button>
-                </div>
-            </div>
-        </form>
+    <div class="col-md-6 text-center">
+        <a class="btn btn-primary" asp-controller="Image" asp-action="Search">Search Images</a>
     </div>
 </div>
-@if (Model != null && Model.Count > 0)
-{
-    <div class="row">
-        @foreach (var image in Model)
-        {
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="@image.Url" class="card-img-top" alt="Image">
-                    <div class="card-body">
-                        <p class="card-text">@image.Description</p>
-                        <p><strong>Keywords: </strong> @string.Join(", ", image.Keywords)</p>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-}
-else
-{
-    <p class="text-center">No images found.</p>
-}
