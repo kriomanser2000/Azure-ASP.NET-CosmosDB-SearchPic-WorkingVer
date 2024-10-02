@@ -1,0 +1,29 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Search Images";
+}
+
+<h2>Search Images by Keyword</h2>
+<form method="post" asp-controller="Image" asp-action="Search">
+    <input type="text" name="keyword" placeholder="Enter keyword" />
+    <button type="submit">Search</button>
+</form>
+@if (Model != null && Model.Count > 0)
+{
+    <ul>
+        @foreach (var image in Model)
+        {
+            <li>
+                <img src="@image.ImageUrl" alt="@image.Description" width="200" />
+                <p>Description: @image.Description</p>
+                <p>Keywords: @string.Join(", ", image.Keywords)</p>
+            </li>
+        }
+    </ul>
+}
+else if (Model != null)
+{
+    <p>No images found with the given keyword.</p>
+}
