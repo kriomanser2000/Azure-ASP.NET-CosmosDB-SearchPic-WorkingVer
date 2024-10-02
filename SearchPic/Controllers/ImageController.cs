@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Cosmos;
 using Azure.Storage.Blobs;
@@ -25,8 +25,8 @@ namespace SearchPic.Controllers
         }
         private async Task<(string Description, List<string> Keywords)> AnalyzeImage(string imageUrl)
         {
-            var subscriptionKey = "234";
-            var endpoint = "dsgfsfg";
+            var subscriptionKey = "";
+            var endpoint = "";
             var client = new ComputerVisionClient(new ApiKeyServiceClientCredentials(subscriptionKey))
             {
                 Endpoint = endpoint
@@ -73,10 +73,6 @@ namespace SearchPic.Controllers
                 Keywords = keywords,
                 ImageUrl = imageUrlWithSas
             };
-            Console.WriteLine($"Saving metadata with ID: {imageMetadata.Id}");
-            Console.WriteLine($"Description: {imageMetadata.Description}");
-            Console.WriteLine($"Keywords: {string.Join(", ", imageMetadata.Keywords)}");
-            Console.WriteLine($"Image URL: {imageMetadata.ImageUrl}");
             try
             {
                 await _cosmosContainer.CreateItemAsync(imageMetadata);
@@ -86,7 +82,7 @@ namespace SearchPic.Controllers
                 Console.WriteLine($"CosmosDB error: {ex.Message}");
                 return BadRequest("Failed to save image metadata.");
             }
-            return Ok(new { Description = description, Keywords = keywords });
+            return View("UploadConfirmation", imageMetadata);
         }
         [HttpGet]
         public IActionResult Search()
